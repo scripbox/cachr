@@ -3,8 +3,8 @@
 
 set -o errexit
 
-# shellcheck source=setup.sh
-source setup.sh
+# shellcheck source=/usr/local/cachr/setup.sh
+source /usr/local/cachr/setup.sh
 
 CACHE_ON_DIR=${CACHE_ON_DIR:-}
 
