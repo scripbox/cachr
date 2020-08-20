@@ -3,8 +3,9 @@
 
 set -o errexit
 
-MD5_CMD=${MD5_CMD:-md5sum}
-CACHE_KEY_PREFIX=${CACHE_KEY_PREFIX:-}
+# shellcheck source=setup.sh
+source setup.sh
+
 CACHE_ON_DIR=${CACHE_ON_DIR:-}
 
 # should be space separated
@@ -17,7 +18,7 @@ if [[ ! "$COMMAND" || ! "$CACHE_KEY_PREFIX" || ! "$CACHE_ON_DIR" || ! "$CACHE_OU
   exit 1
 fi
 
-CHK_SUM=$(find $CACHE_ON_DIR -type f -exec $MD5_CMD {} \; | sort | $MD5_CMD | cut -f1 -d ' ')
+CHK_SUM=$(dir_md5_checksm $CACHE_ON_DIR $MD5_CMD)
 
 echo "cache_run: calculated checksum on dir $CACHE_ON_DIR : $CHK_SUM"
 
@@ -29,7 +30,7 @@ fi
 echo "cache_run: checkout prev commit"
 git checkout HEAD~1 > /dev/null
 
-PREV_CHK_SUM=$(find $CACHE_ON_DIR -type f -exec $MD5_CMD {} \; | $MD5_CMD | cut -f1 -d ' ')
+PREV_CHK_SUM=$(dir_md5_checksm $CACHE_ON_DIR $MD5_CMD)
 
 echo "cache_run: getting cache: $PREV_CHK_SUM for commit: $(git rev-parse HEAD)"
 cachr get "$CACHE_KEY_PREFIX/$PREV_CHK_SUM" || true

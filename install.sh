@@ -10,7 +10,11 @@ if ! which git || ! which wget; then
   fi
 fi
 
-wget https://raw.githubusercontent.com/scripbox/cachr/master/cache_run -O /usr/bin/cache_run
-wget https://raw.githubusercontent.com/scripbox/cachr/master/cache_get -O /usr/bin/cache_get
-wget https://github.com/scripbox/cachr/releases/download/v1.1/cachr -O /usr/bin/cachr
-chmod +x /usr/bin/cache_run /usr/bin/cache_get /usr/bin/cachr
+INSTALLATION_DIR=/usr/local/cachr
+git clone https://github.com/scripbox/cachr.git $INSTALLATION_DIR
+mkdir -p $INSTALLATION_DIR/bin
+wget https://github.com/scripbox/cachr/releases/download/v1.1/cachr -O $INSTALLATION_DIR/bin/cachr
+chmod +x $INSTALLATION_DIR/bin/cachr
+ln -sf $INSTALLATION_DIR/cache_run /usr/bin/cache_run
+ln -sf $INSTALLATION_DIR/cache_get /usr/bin/cache_get
+ln -sf $INSTALLATION_DIR/bin/cachr /usr/bin/cachr

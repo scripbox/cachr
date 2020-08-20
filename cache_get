@@ -3,8 +3,8 @@
 
 set -o errexit
 
-MD5_CMD=${MD5_CMD:-md5sum}
-CACHE_KEY_PREFIX=${CACHE_KEY_PREFIX:-}
+# shellcheck source=setup.sh
+source setup.sh
 
 CACHE_ON_DIR=$1
 
@@ -13,7 +13,7 @@ if [[ ! "$CACHE_KEY_PREFIX" || ! "$CACHE_ON_DIR" ]]; then
   exit 1
 fi
 
-CHK_SUM=$(find $CACHE_ON_DIR -type f -exec $MD5_CMD {} \; | sort | $MD5_CMD | cut -f1 -d ' ')
+CHK_SUM=$(dir_md5_checksm $CACHE_ON_DIR $MD5_CMD)
 
 echo "cache_get: calculated checksum on dir $CACHE_ON_DIR : $CHK_SUM"
 
